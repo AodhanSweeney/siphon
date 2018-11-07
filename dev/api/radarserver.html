@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>siphon.radarserver &mdash; Siphon 0.7</title>
+  <title>siphon.radarserver &mdash; Siphon 0.8</title>
   
 
   
@@ -41,7 +41,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Siphon 0.7" href="../index.html"/>
+    <link rel="top" title="Siphon 0.8" href="../index.html"/>
         <link rel="up" title="The Siphon API" href="index.html"/>
         <link rel="next" title="siphon.simplewebservice" href="simplewebservice.html"/>
         <link rel="prev" title="siphon.ncss" href="ncss.html"/> 
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.8</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -437,22 +437,46 @@ query catalog results download and parsing based on the appropriate query.</p>
 <dl class="attribute">
 <dt id="siphon.radarserver.RadarServer.metadata">
 <code class="descname">metadata</code><a class="headerlink" href="#siphon.radarserver.RadarServer.metadata" title="Permalink to this definition">¶</a></dt>
-<dd><p><a class="reference internal" href="metadata.html#siphon.metadata.TDSCatalogMetadata" title="siphon.metadata.TDSCatalogMetadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">TDSCatalogMetadata</span></code></a> – Contains the result of parsing the radar server endpoint’s dataset.xml. This has
+<dd><p>Contains the result of parsing the radar server endpoint’s dataset.xml. This has
 information about the time and space coverage, as well as full information
 about all of the variables.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference internal" href="metadata.html#siphon.metadata.TDSCatalogMetadata" title="siphon.metadata.TDSCatalogMetadata"><code class="xref py py-class docutils literal notranslate"><span class="pre">TDSCatalogMetadata</span></code></a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="siphon.radarserver.RadarServer.variables">
 <code class="descname">variables</code><a class="headerlink" href="#siphon.radarserver.RadarServer.variables" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>set(str)</em> – Names of all variables available in this dataset</p>
+<dd><p>Names of all variables available in this dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.7)">set</a>(<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="siphon.radarserver.RadarServer.stations">
 <code class="descname">stations</code><a class="headerlink" href="#siphon.radarserver.RadarServer.stations" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict[str, Station]</em> – Mapping of station ID to a <a class="reference internal" href="#siphon.radarserver.Station" title="siphon.radarserver.Station"><code class="xref py py-class docutils literal notranslate"><span class="pre">Station</span></code></a>, which is a namedtuple containing the
+<dd><p>Mapping of station ID to a <a class="reference internal" href="#siphon.radarserver.Station" title="siphon.radarserver.Station"><code class="xref py py-class docutils literal notranslate"><span class="pre">Station</span></code></a>, which is a namedtuple containing the
 station’s id, name, latitude, longitude, and elevation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference internal" href="#siphon.radarserver.Station" title="siphon.radarserver.Station">Station</a>]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -487,7 +511,7 @@ station’s id, name, latitude, longitude, and elevation.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>resp</strong> – The server’s response to the request</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.19.1)">requests.Response</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first"><a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.20.0)">requests.Response</a></p>
 </td>
 </tr>
 <tr class="field-even field"><th class="field-name">Raises:</th><td class="field-body"><p class="first last"><code class="xref py py-exc docutils literal notranslate"><span class="pre">HTTPError</span></code> – If the server returns anything other than a 200 (OK) code</p>
@@ -570,7 +594,7 @@ assigned to the endpoint.</p>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><strong>resp</strong> – The server’s response to the request</p>
 </td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.19.1)">requests.Response</a></p>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.20.0)">requests.Response</a></p>
 </td>
 </tr>
 </tbody>
@@ -594,7 +618,7 @@ assigned to the endpoint.</p>
 </tr>
 <tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><strong>resp</strong> – The server’s response to the request</td>
 </tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.19.1)">requests.Response</a></td>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><a class="reference external" href="http://docs.python-requests.org/en/master/api/#requests.Response" title="(in Requests v2.20.0)">requests.Response</a></td>
 </tr>
 </tbody>
 </table>
@@ -774,7 +798,7 @@ server URL, fetch the catalog, and return the contained catalog references.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018, Siphon Contributors.
-      Last updated on Aug 14, 2018 at 18:17:43.
+      Last updated on Nov 07, 2018 at 20:53:50.
 
     </p>
   </div>
@@ -811,7 +835,7 @@ server URL, fetch the catalog, and return the contained catalog references.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.7.0+54.g4910d1e',
+            VERSION:'0.8.0+12.g53fb0d8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

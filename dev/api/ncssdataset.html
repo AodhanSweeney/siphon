@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>siphon.ncss_dataset &mdash; Siphon 0.7</title>
+  <title>siphon.ncss_dataset &mdash; Siphon 0.8</title>
   
 
   
@@ -41,7 +41,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="Siphon 0.7" href="../index.html"/>
+    <link rel="top" title="Siphon 0.8" href="../index.html"/>
         <link rel="up" title="The Siphon API" href="index.html"/>
         <link rel="next" title="siphon.http_util" href="http_util.html"/>
         <link rel="prev" title="siphon.metadata" href="metadata.html"/> 
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.8</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -220,51 +220,108 @@ part of the <a class="reference internal" href="#siphon.ncss_dataset.NCSSDataset
 <dl class="attribute">
 <dt id="siphon.ncss_dataset.NCSSDataset.variables">
 <code class="descname">variables</code><a class="headerlink" href="#siphon.ncss_dataset.NCSSDataset.variables" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict[str, str]</em> – A dictionary of variables</p>
+<dd><p>A dictionary of variables</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="siphon.ncss_dataset.NCSSDataset.time_span">
 <code class="descname">time_span</code><a class="headerlink" href="#siphon.ncss_dataset.NCSSDataset.time_span" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt><em>dict[str, datetime.datetime]</em> –    A dictionary holding the beginning and ending iso time strings which</dt>
-<dd>define the temporal bounds of the dataset</dd>
+<dd><blockquote>
+<div>A dictionary holding the beginning and ending iso time strings which
+define the temporal bounds of the dataset</div></blockquote>
+<dl class="docutils">
 <dt>featureDataset <span class="classifier-delimiter">:</span> <span class="classifier">dict[str, str]</span></dt>
 <dd>A dictionary containing the type [“grid”, “point”] and location [“url”]
 of the dataset</dd>
 </dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)">datetime.datetime</a>]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="siphon.ncss_dataset.NCSSDataset.accept_list">
 <code class="descname">accept_list</code><a class="headerlink" href="#siphon.ncss_dataset.NCSSDataset.accept_list" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict[str, list[str]]</em> – A dictionary holding the types of valid returns of the dataset by
+<dd><p>A dictionary holding the types of valid returns of the dataset by
 access method [Grid, GridAsPoint, PointFeatureCollection]</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="siphon.ncss_dataset.NCSSDataset.gridsets">
 <code class="descname">gridsets</code><a class="headerlink" href="#siphon.ncss_dataset.NCSSDataset.gridsets" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict[str, set[str]]</em> – A dictionary of gridSets contained within the dataset</p>
+<dd><p>A dictionary of gridSets contained within the dataset</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#set" title="(in Python v3.7)">set</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="siphon.ncss_dataset.NCSSDataset.axes">
 <code class="descname">axes</code><a class="headerlink" href="#siphon.ncss_dataset.NCSSDataset.axes" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict[str, object]</em> – A dictionary of coordinate axes</p>
+<dd><p>A dictionary of coordinate axes</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)">object</a>]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="siphon.ncss_dataset.NCSSDataset.coordinate_transforms">
 <code class="descname">coordinate_transforms</code><a class="headerlink" href="#siphon.ncss_dataset.NCSSDataset.coordinate_transforms" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict[str, object]</em> – A dictionary of coordinate transforms</p>
+<dd><p>A dictionary of coordinate transforms</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)">object</a>]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="siphon.ncss_dataset.NCSSDataset.lat_lon_box">
 <code class="descname">lat_lon_box</code><a class="headerlink" href="#siphon.ncss_dataset.NCSSDataset.lat_lon_box" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict[str, float]</em> – A dictionary holding the north, south, east, and west latitude and
+<dd><p>A dictionary holding the north, south, east, and west latitude and
 longitude bounds of the dataset (in degree_east, degree_north)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>, <a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)">float</a>]</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -309,7 +366,7 @@ node of an NCSS dataset.xml doc</td>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2018, Siphon Contributors.
-      Last updated on Aug 14, 2018 at 18:17:43.
+      Last updated on Nov 07, 2018 at 20:53:50.
 
     </p>
   </div>
@@ -346,7 +403,7 @@ node of an NCSS dataset.xml doc</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.7.0+54.g4910d1e',
+            VERSION:'0.8.0+12.g53fb0d8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -84,7 +84,7 @@ Look at the variables available in this dataset
 
  .. code-block:: none
 
-    {'N1C', 'N3U', 'NAM', 'DVL', 'N0Z', 'HHC', 'DOD', 'N1Q', 'DSP', 'DU6', 'NBQ', 'N1H', 'DHR', 'N0H', 'N0V', 'N3Q', 'NBX', 'NAX', 'N3S', 'N2M', 'N0S', 'NBH', 'N1S', 'NBM', 'N2S', 'NBU', 'NAC', 'N1K', 'N2Q', 'N0C', 'NBK', 'N0K', 'N3H', 'DPA', 'DPR', 'N3X', 'N0U', 'N2U', 'N2X', 'N1P', 'NAQ', 'N2H', 'N3M', 'N1U', 'N0X', 'N3C', 'OHA', 'NTP', 'N2C', 'NBC', 'N0M', 'N2K', 'N0Q', 'DTA', 'NAH', 'DU3', 'N3K', 'NMD', 'DAA', 'DSD', 'NET', 'PTA', 'EET', 'N0R', 'NST', 'NAU', 'NCR', 'NVL', 'N1M', 'N1X', 'NVW', 'NAK'}
+    {'N3H', 'NMD', 'NBH', 'NET', 'N0C', 'N1S', 'N3X', 'N2K', 'NAH', 'NAK', 'NBX', 'OHA', 'N0H', 'DAA', 'DPA', 'N3M', 'NVW', 'N0V', 'NCR', 'N0Q', 'N1P', 'N2S', 'N2X', 'DU3', 'N3K', 'NBC', 'NBU', 'N2M', 'DU6', 'NBK', 'NBM', 'N0Z', 'N2H', 'N1H', 'N1K', 'HHC', 'NTP', 'NVL', 'N2U', 'DVL', 'NAQ', 'N3C', 'N0R', 'N1X', 'N3U', 'DSD', 'DSP', 'NAX', 'N1C', 'N1Q', 'DTA', 'NST', 'N0M', 'N0K', 'N1M', 'N2C', 'N3S', 'DHR', 'DOD', 'NAU', 'NAC', 'NBQ', 'PTA', 'DPR', 'EET', 'N2Q', 'N0S', 'NAM', 'N0X', 'N0U', 'N3Q', 'N1U'}
 
 
 Create a new query object to help request the data. Using the chaining
@@ -151,7 +151,7 @@ find one NIDS file in the return.
 
  .. code-block:: none
 
-    ['Level3_FTG_N0Q_20180814_1807.nids']
+    ['Level3_FTG_N0Q_20181107_2048.nids']
 
 
 We can pull that dataset out of the dictionary and look at the available access URLs.
@@ -173,7 +173,7 @@ We see URLs for OPeNDAP, CDMRemote, and HTTPServer (direct download).
 
  .. code-block:: none
 
-    {'OPENDAP': 'http://thredds.ucar.edu/thredds/dodsC/nexrad/level3/IDD/N0Q/FTG/20180814/Level3_FTG_N0Q_20180814_1807.nids', 'HTTPServer': 'http://thredds.ucar.edu/thredds/fileServer/nexrad/level3/IDD/N0Q/FTG/20180814/Level3_FTG_N0Q_20180814_1807.nids', 'CdmRemote': 'http://thredds.ucar.edu/thredds/cdmremote/nexrad/level3/IDD/N0Q/FTG/20180814/Level3_FTG_N0Q_20180814_1807.nids'}
+    {'OPENDAP': 'http://thredds.ucar.edu/thredds/dodsC/nexrad/level3/IDD/N0Q/FTG/20181107/Level3_FTG_N0Q_20181107_2048.nids', 'HTTPServer': 'http://thredds.ucar.edu/thredds/fileServer/nexrad/level3/IDD/N0Q/FTG/20181107/Level3_FTG_N0Q_20181107_2048.nids', 'CdmRemote': 'http://thredds.ucar.edu/thredds/cdmremote/nexrad/level3/IDD/N0Q/FTG/20181107/Level3_FTG_N0Q_20181107_2048.nids'}
 
 
 We'll use the CDMRemote reader in Siphon and pass it the appropriate access URL.
@@ -240,7 +240,7 @@ Finally, we plot them up using matplotlib.
 
 
 
-**Total running time of the script:** ( 0 minutes  2.252 seconds)
+**Total running time of the script:** ( 0 minutes  1.756 seconds)
 
 
 .. _sphx_glr_download_examples_Radar_Server_Level_3.py:
