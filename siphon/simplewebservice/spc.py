@@ -54,7 +54,6 @@ class SPC_info:
 
         elif int(self.year_string) >= 2017:
             self.one_day_table = self.storms
-            print(type(self.one_day_table))
 
         if self.one_day_table.empty == True:
             print('===========================\n',
@@ -165,13 +164,15 @@ class SPC_info:
                 f3.append(fields[26].strip())
                 f4.append(fields[27].strip())
 
-            storms = DataFrame({'Torn Num': om, 'Year': year, 'Month': mo, 'Day': day, 'Time': time,
+            storms = DataFrame({'Num': om, 'Year': year, 'Month': mo, 'Day': day, 'Time': time,
                                 'Time Zone': tz, 'State': st, mag_string: mag, 'Injuries': inj,
                                 'Fatalities': fat, 'Property Loss': loss, 'Crop loss': closs,
                                 'Start lat': slat, 'Start lon': slon, 'End lat': elat, 'End lon': elon,
-                                'Length (mi)':length, 'Width (yrd)': wid, 'NS': ns, 'SN': sn, 'SG': sg,
-                                'County Code 1': f1, 'County Code 2': f2, 'County Code 3': f3, 'County Code 4':f4})
+                                'Length (mi)':length, 'Width (yrd)': wid, 'NS': ns, 'SN': sn,
+                                'SG': sg, 'County Code 1': f1, 'County Code 2': f2, 'County Code 3': f3,
+                                'County Code 4':f4})
             return(storms)
+
         else:
             time, mag, location, county = [], [], [], []
             state, lat, lon, comment = [], [], [], []
@@ -190,7 +191,3 @@ class SPC_info:
                                'County': county, 'State': state, 'Lat': lat,
                                'Lon': lon, 'Comment': comment})
             return(storms)
-#################################################################################
-
-SPC = SPC_info()
-print(SPC.one_day_table)
