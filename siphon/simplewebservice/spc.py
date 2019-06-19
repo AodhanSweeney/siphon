@@ -1,5 +1,5 @@
-"""
-Reading Storm Prediction Center Data
+
+""" Reading Storm Prediction Center Data
 ======================================
 By: Aodhan Sweeney
 
@@ -15,7 +15,7 @@ from pandas import DataFrame
 import requests
 
 
-def readUrlFile(url):
+def readurlfile(url):
     """readUrlFile is a function created to read a .dat file from a given url
     and compile it into a list of strings with given headers.
 
@@ -29,17 +29,18 @@ def readUrlFile(url):
     data: list
         parced data of SPC report in list format
     """
-
     headers = {'User-agent': 'Unidata Python Client Test'}
     response = requests.get(url, headers=headers)
     string_buffer = StringIO(response.text)
     data = string_buffer.getvalue()
     return data.splitlines()
 
-class SPC_info:
-    """SPC_info is a class that pulls data from the SPC center on tornados, hail
-    events, and severe wind. This class will return a pandas dataframe for each
-    of these storm events."""
+
+class SPC_Info:
+    """SPC_info is a class that pulls data from the SPC center.
+    This class pulls data on tornados, hail, and severe wind events. This class will return a
+    pandas dataframe for each of these storm events."""
+
     def __init__(self):
         self.storm_type = input('Enter storm type: ')
         self.date_time = input('Enter date string: ')
@@ -48,23 +49,18 @@ class SPC_info:
         self.day_string = self.date_time[6:8]
         self.storms = self.storm_type_selection()
         if int(self.year_string) < 2017:
-            self.one_year_table = self.storms[self.storms['Year'] == self.year_string]
-            self.one_month_table = self.one_year_table[self.one_year_table['Month'] == self.month_string]
-            self.one_day_table = self.one_month_table[self.one_month_table['Day'] == self.day_string]
+            one_year_table = self.storms[self.storms['Year'] == self.year_string]
+            one_month_table = one_year_table[one_year_table['Month'] == self.month_string]
+            self.one_day_table = one_month_table[one_month_table['Day'] == self.day_string]
 
         elif int(self.year_string) >= 2017:
             self.one_day_table = self.storms
 
-        if self.one_day_table.empty == True:
-            print('===========================\n',
-                  'No {} reports for that day.'.format(self.storm_type),
-                  '\n===========================')
-
     def storm_type_selection(self):
         """storm_type_selection is a member function designed to find the url for a specific
-        storm type and year. Prior to 2017, the ways in which the SPC storm data is inconsistent.
-        In order to deal with this, the Urls used to find the data for a given day changes based
-        on the year chosen by the user.
+        storm type and year. Prior to 2017, the ways in which the SPC storm data is
+        inconsistent. In order to deal with this, the Urls used to find the data for a given
+        day changes based on the year chosen by the user.
 
         Parameters
         ----------
@@ -74,38 +70,38 @@ class SPC_info:
         Returns
         -------
         (torn/wind/hail)_reports: pandas DataFrame
-            This dataframe has the data about the specific storm choice for either one day or a 60+
-            year period based on what year is chosen.
+            This dataframe has the data about the specific storm choice for either one day
+            or a 60+ year period based on what year is chosen.
         """
-
         if self.storm_type == 'tornado':
             if int(self.year_string) <= 2017:
                 url = 'https://www.spc.noaa.gov/wcm/data/1950-2017_torn.csv'
             else:
-                url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_torn.csv'.format(
-                                            self.year_string[2:4], self.month_string, self.day_string)
-            torn_fileLines = readUrlFile(url)
-            torn_reports = self.split_storm_info(torn_fileLines, 'F-Scale')
+                url = 'https://www.spc.noaa.gov/climo/reports/{}
+                        {}{}_rpts_filtered_torn.csv'.format(self.year_string[2:4],
+                        self.month_string, self.day_string)
+            torn_filelines = readurlfile(url)
+            torn_reports = self.split_storm_info(torn_filelines, 'F-Scale')
             return(torn_reports)
 
         elif self.storm_type == 'hail':
             if int(self.year_string) <= 2017:
                 url = 'https://www.spc.noaa.gov/wcm/data/1955-2017_hail.csv'
             else:
-                url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_hail.csv'.format(
-                                            self.year_string[2:4], self.month_string, self.day_string)
-            hail_fileLines = readUrlFile(url)
-            hail_reports = self.split_storm_info(hail_fileLines, 'Size (in)')
+                url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_hail.csv'.
+                format(self.year_string[2:4], self.month_string, self.day_string)
+            hail_filelines = readurlfile(url)
+            hail_reports = self.split_storm_info(hail_filelines, 'Size (in)')
             return(hail_reports)
 
         elif self.storm_type == 'wind':
             if int(self.year_string) <= 2017:
                 url = 'https://www.spc.noaa.gov/wcm/data/1955-2017_wind.csv'
             else:
-                url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_wind.csv'.format(
-                                            self.year_string[2:4], self.month_string, self.day_string)
-            wind_fileLines = readUrlFile(url)
-            wind_reports = self.split_storm_info(wind_fileLines, 'Speed (kt)')
+                url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_wind.csv'
+                .format(self.year_string[2:4], self.month_string, self.day_string)
+            wind_filelines = readurlfile(url)
+            wind_reports = self.split_storm_info(wind_filelines, 'Speed (kt)')
             return(wind_reports)
 
 
@@ -129,7 +125,6 @@ class SPC_info:
             Data for the 60+ year time frame consolidated into one
             single dataframe
         """
-
         if int(self.year_string) <= 2017:
             om, year, mo, day, time, tz, st, sn = [], [], [], [], [], [], [], []
             stn, mag, inj, fat, loss, closs, slat = [], [], [], [], [], [], []
@@ -164,12 +159,13 @@ class SPC_info:
                 f3.append(fields[26].strip())
                 f4.append(fields[27].strip())
 
-            storms = DataFrame({'Num': om, 'Year': year, 'Month': mo, 'Day': day, 'Time': time,
-                                'Time Zone': tz, 'State': st, mag_string: mag, 'Injuries': inj,
-                                'Fatalities': fat, 'Property Loss': loss, 'Crop loss': closs,
-                                'Start lat': slat, 'Start lon': slon, 'End lat': elat, 'End lon': elon,
-                                'Length (mi)':length, 'Width (yrd)': wid, 'NS': ns, 'SN': sn,
-                                'SG': sg, 'County Code 1': f1, 'County Code 2': f2, 'County Code 3': f3,
+            storms = DataFrame({'Num': om, 'Year': year, 'Month': mo, 'Day': day,
+                                'Time': time, 'Time Zone': tz, 'State': st, mag_string: mag,
+                                'Injuries': inj, 'Fatalities': fat, 'Property Loss': loss,
+                                'Crop loss': closs, 'Start lat': slat, 'Start lon': slon,
+                                'End lat': elat, 'End lon': elon, 'Length (mi)':length,
+                                'Width (yrd)': wid, 'NS': ns, 'SN': sn, 'SG': sg,
+                                'County Code 1': f1, 'County Code 2': f2, 'County Code 3': f3,
                                 'County Code 4':f4})
             return(storms)
 
