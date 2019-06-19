@@ -77,9 +77,9 @@ class SPC_Info:
             if int(self.year_string) <= 2017:
                 url = 'https://www.spc.noaa.gov/wcm/data/1950-2017_torn.csv'
             else:
-                url = 'https://www.spc.noaa.gov/climo/reports/{}
-                        {}{}_rpts_filtered_torn.csv'.format(self.year_string[2:4],
-                        self.month_string, self.day_string)
+                url = 'https://www.spc.noaa.gov/climo/reports/'
+                    + '{}{}{}_rpts_filtered_torn.csv'.format(self.year_string[2: 4],
+                    self.month_string, self.day_string)
             torn_filelines = readurlfile(url)
             torn_reports = self.split_storm_info(torn_filelines, 'F-Scale')
             return(torn_reports)
@@ -103,7 +103,6 @@ class SPC_Info:
             wind_filelines = readurlfile(url)
             wind_reports = self.split_storm_info(wind_filelines, 'Speed (kt)')
             return(wind_reports)
-
 
     def split_storm_info(self, storm_list, mag_string):
         """split_storm_info is a function to split storm information kept in a
@@ -129,8 +128,8 @@ class SPC_Info:
             om, year, mo, day, time, tz, st, sn = [], [], [], [], [], [], [], []
             stn, mag, inj, fat, loss, closs, slat = [], [], [], [], [], [], []
             slon, elat, elon, length, wid, ns, sg = [], [], [], [], [], [], []
-            f1, f2, f3, f4= [], [], [], []
-            for line in storm_list[1:]:
+            f1, f2, f3, f4 = [], [], [], []
+            for line in storm_list[1: ]:
                 fields = line.split(',')
                 om.append(fields[0].strip())
                 year.append(fields[1].strip())
@@ -163,10 +162,10 @@ class SPC_Info:
                                 'Time': time, 'Time Zone': tz, 'State': st, mag_string: mag,
                                 'Injuries': inj, 'Fatalities': fat, 'Property Loss': loss,
                                 'Crop loss': closs, 'Start lat': slat, 'Start lon': slon,
-                                'End lat': elat, 'End lon': elon, 'Length (mi)':length,
+                                'End lat': elat, 'End lon': elon, 'Length (mi)': length,
                                 'Width (yrd)': wid, 'NS': ns, 'SN': sn, 'SG': sg,
                                 'County Code 1': f1, 'County Code 2': f2, 'County Code 3': f3,
-                                'County Code 4':f4})
+                                'County Code 4': f4})
             return(storms)
 
         else:
@@ -184,6 +183,6 @@ class SPC_Info:
                 comment.append(fields[7])
 
             storms = DataFrame({'Time': time, mag_string: mag, 'Location': location,
-                               'County': county, 'State': state, 'Lat': lat,
-                               'Lon': lon, 'Comment': comment})
+                                'County': county, 'State': state, 'Lat': lat,
+                                'Lon': lon, 'Comment': comment})
             return(storms)

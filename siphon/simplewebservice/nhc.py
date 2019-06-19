@@ -1,5 +1,5 @@
-"""
-Reading National Hurricane Center Data
+
+"""Reading National Hurricane Center Data
 ======================================
 By: Aodhan Sweeney
 
@@ -10,7 +10,6 @@ Center and return the data in an easy to use format.
 import gzip
 from io import BytesIO
 from io import StringIO
-import os
 
 import numpy as np
 from pandas import DataFrame
@@ -110,20 +109,20 @@ class NHCD():
                     # directional letters.
                     # Includes type conversion in order to divide by 10 to
                     # get the correct coordinate.
-                    latSingle = int(fields[6][:-1])/10.0
-                    lonSingle = -(int(fields[7][:-1])/10.0)
-                    lat.append(latSingle)
-                    lon.append(lonSingle)
+                    latsingle = int(fields[6][:-1])/10.0
+                    lonsingle = -(int(fields[7][:-1])/10.0)
+                    lat.append(latsingle)
+                    lon.append(lonsingle)
                     basin.append(fields[0])
                     forecast_hour.append(fields[5])
-                    cycloneNum.append(fields[1].strip())
-                    warnDT.append(fields[2].strip())
+                    cyclonenum.append(fields[1].strip())
+                    warn_dt.append(fields[2].strip())
                     model.append(fields[4].strip())
 
                     # Combining data from file into a Pandas Dataframe.
                     storm_data_frame = DataFrame({'Basin': basin,
-                                                  'CycloneNum': np.array(cycloneNum),
-                                                  'WarnDT': np.array(warnDT),
+                                                  'CycloneNum': np.array(cyclonenum),
+                                                  'WarnDT': np.array(warn_dt),
                                                   'Model': model, 'Lat': np.array(lat),
                                                   'Lon': np.array(lon),
                                                   'forecast_hour':
@@ -136,7 +135,6 @@ class NHCD():
 
             else:
                 print('url {} was not valid, select different storm.'.format(url))
-                track_button = False
 
             url_count += 1
 
