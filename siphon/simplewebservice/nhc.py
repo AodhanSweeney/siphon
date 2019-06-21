@@ -15,7 +15,6 @@ import requests
 
 
 def read_urlfile(url):
-    
     """
     read_urlfile is a function created to read a .dat file from a given url.
 
@@ -29,6 +28,7 @@ def read_urlfile(url):
     data: list
         parced data of NHC in list format
     """
+
     headers = {'User-agent': 'Unidata Python Client Test'}
     response = requests.get(url, headers=headers)
     # Store data response in a string buffer
@@ -64,7 +64,6 @@ def read_gzfile(url):
 
 
 def split_storm_info(storm_list):
-
     """
     The split_storm_info takes a list of strings and creates a pandas dataframe for NHC data.
 
@@ -78,6 +77,7 @@ def split_storm_info(storm_list):
     storms: pandas.DataFrame
         dataframe of NHC info
     """
+
     name, cyclonenum, year, stormtype, basin, filename = [], [], [], [], [], []
     for line in storm_list[1:]:
         fields = line.split(',')
@@ -96,25 +96,24 @@ def split_storm_info(storm_list):
 
 class NHCD():
     """
-    This class is made to read data from the National Hurricane Center Database (NHCD).
+    Reads data from the National Hurricane Center Database (NHCD).
 
     This class reads and then makes dataframes to easier access NHC Data.
     """
     def __init__(self):
         """
-        The __init__ function initiates the NHCD class.
+        Initiates the NHCD class with member attributes and storm info.
 
         This initiation creates a file lines list from a given url with all storms,
         and also a storm_table member attribute.
         """
+
         file_lines = read_urlfile('http://ftp.nhc.noaa.gov/atcf/index/storm_list.txt')
         self.storm_table = split_storm_info(file_lines)
 
-
     def get_tracks(self, year, filename):
-
         """
-        The get_tracks is a fcn that makes a url and pulls track data for a given storm.
+        Makes url and pulls track data for a given storm.
 
         The Url is made by using both the year and the filename. This function will then
         read the data and create a data frame for both the forecast and best tracks and
@@ -136,6 +135,7 @@ class NHCD():
         unique_models: list
             all the models that have run forecasts for this storm throughout its life
         """
+
         year = str(year)
         data_dictionary = {}
         # Current year data is stored in a different location
@@ -163,8 +163,8 @@ class NHCD():
                     line = str(line)
                     line = line[2:]
                     fields = line.split(',')
-                    latsingle = int(fields[6][:-1])/10.0
-                    lonsingle = -(int(fields[7][:-1])/10.0)
+                    latsingle = int(fields[6][:-1]) / 10.0
+                    lonsingle = -(int(fields[7][:-1]) / 10.0)
                     lat.append(latsingle)
                     lon.append(lonsingle)
                     basin.append(fields[0])
@@ -199,9 +199,8 @@ class NHCD():
         return(unique_models)
 
     def model_selection_latlon(self, models):
-
         """
-        The model_selection_latlon allows for a model and storm selection and get lat/lons.
+        Allows for model and storm selection and get lat/lons and track evolution data.
 
         Parameters
         ----------
@@ -217,6 +216,7 @@ class NHCD():
             all model forecasts for that specific model type that have been run for a given
             storm
         """
+
         # We will always plot best track, and thus must save the coordinates for plotting
         best_track = self.storm_dictionary.get('best_track')
         self.date_times = best_track['WarnDT']
