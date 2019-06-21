@@ -1,8 +1,7 @@
+""" Reading Storm Prediction Center Data.
 
-""" Reading Storm Prediction Center Data
 ======================================
 By: Aodhan Sweeney
-
 This program pulls data from the Storm Prediction
 Center's Archive of data that goes back to the 1950s.
 Weather events that are available are
