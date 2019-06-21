@@ -37,7 +37,7 @@ def readurlfile(url):
     return data.splitlines()
 
 
-class SPC_Info:
+class SpcData:
     """
     Pulls data from the SPC center.
 
@@ -46,9 +46,21 @@ class SPC_Info:
 
     """
 
-    def __init__(self):
-        self.storm_type = input('Enter storm type: ')
-        self.date_time = input('Enter date string: ')
+    def __init__(self, stormtype, datetime):
+        """
+        Create class of SpcData, initialized with stormtype and datetime for parsing.
+
+        Parameters
+        ----------
+        stormtype: string
+            either 'tornado', 'hail', or 'wind'
+        datetime: string
+            four digets for year (1955-2019), two for month, and two for day. Eg. 20170504
+            meaning May 4th, 2017.
+
+        """
+        self.storm_type = stormtype
+        self.date_time = datetime
         self.year_string = self.date_time[0:4]
         self.month_string = self.date_time[4:6]
         self.day_string = self.date_time[6:8]

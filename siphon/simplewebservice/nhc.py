@@ -105,7 +105,7 @@ class NHCD():
 
     def __init__(self):
         """
-        Initiate with member attributes and storm info.
+        Create with member attributes and storm info.
 
         This initiation creates a file lines list from a given url with all storms,
         and also a storm_table member attribute.
