@@ -77,9 +77,8 @@ class SPC_Info:
             if int(self.year_string) <= 2017:
                 url = 'https://www.spc.noaa.gov/wcm/data/1950-2017_torn.csv'
             else:
-                url = 'https://www.spc.noaa.gov/climo/reports/'
-                    + '{}{}{}_rpts_filtered_torn.csv'.format(self.year_string[2: 4],
-                    self.month_string, self.day_string)
+                empty_url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_torn.csv'
+                url = empty_url.format(self.year_string[2: 4], self.month_string, self.day_string)
             torn_filelines = readurlfile(url)
             torn_reports = self.split_storm_info(torn_filelines, 'F-Scale')
             return(torn_reports)
@@ -88,8 +87,8 @@ class SPC_Info:
             if int(self.year_string) <= 2017:
                 url = 'https://www.spc.noaa.gov/wcm/data/1955-2017_hail.csv'
             else:
-                url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_hail.csv'.
-                format(self.year_string[2:4], self.month_string, self.day_string)
+                empty_url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_hail.csv'
+                url = empty_url.format(self.year_string[2:4], self.month_string, self.day_string)
             hail_filelines = readurlfile(url)
             hail_reports = self.split_storm_info(hail_filelines, 'Size (in)')
             return(hail_reports)
@@ -98,8 +97,8 @@ class SPC_Info:
             if int(self.year_string) <= 2017:
                 url = 'https://www.spc.noaa.gov/wcm/data/1955-2017_wind.csv'
             else:
-                url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_wind.csv'
-                .format(self.year_string[2:4], self.month_string, self.day_string)
+                empty_url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_wind.csv'
+                url = empty_url.format(self.year_string[2:4], self.month_string, self.day_string)
             wind_filelines = readurlfile(url)
             wind_reports = self.split_storm_info(wind_filelines, 'Speed (kt)')
             return(wind_reports)
