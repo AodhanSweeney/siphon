@@ -17,7 +17,7 @@ import requests
 
 def read_urlfile(url):
     """
-    read_urlfile is a function created to read a .dat file from a given url.
+    Read a .dat file from a given url.
 
     Parameters
     ----------
@@ -41,7 +41,7 @@ def read_urlfile(url):
 
 def read_gzfile(url):
     """
-    The readGZFile is a function which opens and reads zipped files.
+    Open and reads zipped files.
 
     Parameters
     ----------
@@ -66,7 +66,7 @@ def read_gzfile(url):
 
 def split_storm_info(storm_list):
     """
-    The split_storm_info takes a list of strings and creates a pandas dataframe for NHC data.
+    Take a list of strings and creates a pandas dataframe for NHC data.
 
     Parameters
     ----------
@@ -102,9 +102,10 @@ class NHCD():
     This class reads and then makes dataframes to easier access NHC Data.
 
     """
+
     def __init__(self):
         """
-        Initiates the NHCD class with member attributes and storm info.
+        Initiate the NHCD class with member attributes and storm info.
 
         This initiation creates a file lines list from a given url with all storms,
         and also a storm_table member attribute.
@@ -115,7 +116,7 @@ class NHCD():
 
     def get_tracks(self, year, filename):
         """
-        Makes url and pulls track data for a given storm.
+        Make url and pulls track data for a given storm.
 
         The Url is made by using both the year and the filename. This function will then
         read the data and create a data frame for both the forecast and best tracks and
@@ -202,7 +203,7 @@ class NHCD():
 
     def model_selection_latlon(self, models):
         """
-        Allows for model and storm selection and get lat/lons and track evolution data.
+        Select model type and get lat/lons and track evolution data.
 
         Parameters
         ----------
