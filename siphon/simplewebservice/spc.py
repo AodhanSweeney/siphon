@@ -39,7 +39,8 @@ def readurlfile(url):
 class SPC_Info:
     """SPC_info is a class that pulls data from the SPC center.
     This class pulls data on tornados, hail, and severe wind events. This class will return a
-    pandas dataframe for each of these storm events."""
+    pandas dataframe for each of these storm events.
+    """
 
     def __init__(self):
         self.storm_type = input('Enter storm type: ')
@@ -129,7 +130,7 @@ class SPC_Info:
             stn, mag, inj, fat, loss, closs, slat = [], [], [], [], [], [], []
             slon, elat, elon, length, wid, ns, sg = [], [], [], [], [], [], []
             f1, f2, f3, f4 = [], [], [], []
-            for line in storm_list[1: ]:
+            for line in storm_list[1:]:
                 fields = line.split(',')
                 om.append(fields[0].strip())
                 year.append(fields[1].strip())
