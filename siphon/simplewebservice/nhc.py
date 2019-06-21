@@ -1,4 +1,4 @@
-""" Reading National Hurricane Center Data.
+"""Reading National Hurricane Center Data.
 
 ======================================
 By: Aodhan Sweeney
@@ -13,7 +13,9 @@ import numpy as np
 from pandas import DataFrame
 import requests
 
+
 def read_urlfile(url):
+    
     """
     read_urlfile is a function created to read a .dat file from a given url.
 
@@ -37,7 +39,9 @@ def read_urlfile(url):
 
 
 def read_gzfile(url):
-    """readGZFile is a function which opens and reads zipped files.
+
+    """
+    The readGZFile is a function which opens and reads zipped files.
 
     Parameters
     ----------
@@ -60,7 +64,9 @@ def read_gzfile(url):
 
 
 def split_storm_info(storm_list):
-    """split_storm_info takes a list of strings and creates a pandas dataframe for NHC data.
+
+    """
+    The split_storm_info takes a list of strings and creates a pandas dataframe for NHC data.
 
     Parameters
     ----------
@@ -89,12 +95,14 @@ def split_storm_info(storm_list):
 
 
 class NHCD():
-    """This class is made to read data from the National Hurricane Center Database (NHCD).
+    """
+    This class is made to read data from the National Hurricane Center Database (NHCD).
 
     This class reads and then makes dataframes to easier access NHC Data.
     """
     def __init__(self):
-        """__init__ function initiates the NHCD class.
+        """
+        The __init__ function initiates the NHCD class.
 
         This initiation creates a file lines list from a given url with all storms,
         and also a storm_table member attribute.
@@ -104,7 +112,9 @@ class NHCD():
 
 
     def get_tracks(self, year, filename):
-        """get_tracks is a fcn that makes a url and pulls track data for a given storm.
+
+        """
+        The get_tracks is a fcn that makes a url and pulls track data for a given storm.
 
         The Url is made by using both the year and the filename. This function will then
         read the data and create a data frame for both the forecast and best tracks and
@@ -189,7 +199,9 @@ class NHCD():
         return(unique_models)
 
     def model_selection_latlon(self, models):
-        """model_selection_latlon allows for a model and storm selection and get lat/lons.
+
+        """
+        The model_selection_latlon allows for a model and storm selection and get lat/lons.
 
         Parameters
         ----------
