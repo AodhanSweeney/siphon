@@ -97,7 +97,7 @@ def split_storm_info(storm_list):
 
 class NHCD():
     """
-    Reads data from the National Hurricane Center Database (NHCD).
+    Read data from the National Hurricane Center Database (NHCD).
 
     This class reads and then makes dataframes to easier access NHC Data.
 
@@ -105,7 +105,7 @@ class NHCD():
 
     def __init__(self):
         """
-        Initiate the NHCD class with member attributes and storm info.
+        Initiate with member attributes and storm info.
 
         This initiation creates a file lines list from a given url with all storms,
         and also a storm_table member attribute.

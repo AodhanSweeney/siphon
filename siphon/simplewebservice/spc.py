@@ -1,4 +1,4 @@
-""" Reading Storm Prediction Center Data.
+"""Reading Storm Prediction Center Data.
 
 ======================================
 By: Aodhan Sweeney
@@ -6,6 +6,7 @@ This program pulls data from the Storm Prediction
 Center's Archive of data that goes back to the 1950s.
 Weather events that are available are
 hail, wind, and tornados.
+
 """
 
 from io import StringIO
@@ -15,8 +16,8 @@ import requests
 
 
 def readurlfile(url):
-    """readUrlFile is a function created to read a .dat file from a given url
-    and compile it into a list of strings with given headers.
+    """
+    Read a .dat file from a given url.
 
     Parameters
     ----------
@@ -27,6 +28,7 @@ def readurlfile(url):
     -------
     data: list
         parced data of SPC report in list format
+
     """
     headers = {'User-agent': 'Unidata Python Client Test'}
     response = requests.get(url, headers=headers)
@@ -36,9 +38,12 @@ def readurlfile(url):
 
 
 class SPC_Info:
-    """SPC_info is a class that pulls data from the SPC center.
-    This class pulls data on tornados, hail, and severe wind events. This class will return a
+    """
+    Pulls data from the SPC center.
+
+    This class gets data on tornados, hail, and severe wind events. This class will return a
     pandas dataframe for each of these storm events.
+
     """
 
     def __init__(self):
@@ -57,10 +62,12 @@ class SPC_Info:
             self.one_day_table = self.storms
 
     def storm_type_selection(self):
-        """storm_type_selection is a member function designed to find the url for a specific
-        storm type and year. Prior to 2017, the ways in which the SPC storm data is
-        inconsistent. In order to deal with this, the Urls used to find the data for a given
-        day changes based on the year chosen by the user.
+        """
+        Find and create the url for a specific storm type and year.
+
+        Prior to 2017, the ways in which the SPC storm data is inconsistent. In order
+        to deal with this, the Urls used to find the data for a given day changes
+        based on the year chosen by the user.
 
         Parameters
         ----------
@@ -72,13 +79,14 @@ class SPC_Info:
         (torn/wind/hail)_reports: pandas DataFrame
             This dataframe has the data about the specific storm choice for either one day
             or a 60+ year period based on what year is chosen.
+
         """
         if self.storm_type == 'tornado':
             if int(self.year_string) <= 2017:
                 url = 'https://www.spc.noaa.gov/wcm/data/1950-2017_torn.csv'
             else:
-                empty_url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_torn.csv'
-                url = empty_url.format(self.year_string[2: 4], self.month_string, self.day_string)
+                zurl = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_torn.csv'
+                url = zurl.format(self.year_string[2: 4], self.month_string, self.day_string)
             torn_filelines = readurlfile(url)
             torn_reports = self.split_storm_info(torn_filelines, 'F-Scale')
             return(torn_reports)
@@ -87,8 +95,8 @@ class SPC_Info:
             if int(self.year_string) <= 2017:
                 url = 'https://www.spc.noaa.gov/wcm/data/1955-2017_hail.csv'
             else:
-                empty_url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_hail.csv'
-                url = empty_url.format(self.year_string[2:4], self.month_string, self.day_string)
+                zurl = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_hail.csv'
+                url = zurl.format(self.year_string[2:4], self.month_string, self.day_string)
             hail_filelines = readurlfile(url)
             hail_reports = self.split_storm_info(hail_filelines, 'Size (in)')
             return(hail_reports)
@@ -97,15 +105,15 @@ class SPC_Info:
             if int(self.year_string) <= 2017:
                 url = 'https://www.spc.noaa.gov/wcm/data/1955-2017_wind.csv'
             else:
-                empty_url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_wind.csv'
-                url = empty_url.format(self.year_string[2:4], self.month_string, self.day_string)
+                zurl = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_wind.csv'
+                url = zurl.format(self.year_string[2:4], self.month_string, self.day_string)
             wind_filelines = readurlfile(url)
             wind_reports = self.split_storm_info(wind_filelines, 'Speed (kt)')
             return(wind_reports)
 
     def split_storm_info(self, storm_list, mag_string):
-        """split_storm_info is a function to split storm information kept in a
-        .csv file provided by the Storm Predictions Center.
+        """
+        Split storm information kept in a csv file provided by the SPC.
 
         Parameters
         ----------
@@ -122,6 +130,7 @@ class SPC_Info:
         storms: pandas DataFrame
             Data for the 60+ year time frame consolidated into one
             single dataframe
+
         """
         if int(self.year_string) <= 2017:
             om, year, mo, day, time, tz, st, sn = [], [], [], [], [], [], [], []
