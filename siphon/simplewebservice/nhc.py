@@ -4,6 +4,7 @@
 By: Aodhan Sweeney
 This program is written to pull data from the National Hurricane
 Center and return the data in an easy to use format.
+
 """
 import gzip
 from io import BytesIO
@@ -27,8 +28,8 @@ def read_urlfile(url):
     -------
     data: list
         parced data of NHC in list format
-    """
 
+    """
     headers = {'User-agent': 'Unidata Python Client Test'}
     response = requests.get(url, headers=headers)
     # Store data response in a string buffer
@@ -39,7 +40,6 @@ def read_urlfile(url):
 
 
 def read_gzfile(url):
-
     """
     The readGZFile is a function which opens and reads zipped files.
 
@@ -52,6 +52,7 @@ def read_gzfile(url):
     -------
     data: list
         parced data of NHC in list format
+
     """
     headers = {'User-agent': 'Unidata Python Client Test'}
     response = requests.get(url, headers=headers)
@@ -76,8 +77,8 @@ def split_storm_info(storm_list):
     -------
     storms: pandas.DataFrame
         dataframe of NHC info
-    """
 
+    """
     name, cyclonenum, year, stormtype, basin, filename = [], [], [], [], [], []
     for line in storm_list[1:]:
         fields = line.split(',')
@@ -99,6 +100,7 @@ class NHCD():
     Reads data from the National Hurricane Center Database (NHCD).
 
     This class reads and then makes dataframes to easier access NHC Data.
+
     """
     def __init__(self):
         """
@@ -106,8 +108,8 @@ class NHCD():
 
         This initiation creates a file lines list from a given url with all storms,
         and also a storm_table member attribute.
-        """
 
+        """
         file_lines = read_urlfile('http://ftp.nhc.noaa.gov/atcf/index/storm_list.txt')
         self.storm_table = split_storm_info(file_lines)
 
@@ -134,8 +136,8 @@ class NHCD():
         -------
         unique_models: list
             all the models that have run forecasts for this storm throughout its life
-        """
 
+        """
         year = str(year)
         data_dictionary = {}
         # Current year data is stored in a different location
@@ -215,8 +217,8 @@ class NHCD():
         self.model_table: list attribute
             all model forecasts for that specific model type that have been run for a given
             storm
-        """
 
+        """
         # We will always plot best track, and thus must save the coordinates for plotting
         best_track = self.storm_dictionary.get('best_track')
         self.date_times = best_track['WarnDT']
