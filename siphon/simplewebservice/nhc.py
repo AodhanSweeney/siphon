@@ -220,7 +220,6 @@ class NHCD():
             storm
 
         """
-        # We will always plot best track, and thus must save the coordinates for plotting
         best_track = self.storm_dictionary.get('best_track')
         self.date_times = best_track['WarnDT']
         lats = best_track['Lat']
