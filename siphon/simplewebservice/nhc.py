@@ -32,11 +32,10 @@ class NHCD():
         into a member atribute '.storm_table'.
 
         """
-
         storm_list_columns = ['Name', 'Basin', 'CycloneNum', 'Year', 'StormType', 'Filename']
         file_table = pd.read_csv('http://ftp.nhc.noaa.gov/atcf/index/storm_list.txt',
                                  names=storm_list_columns, header=None, index_col=False,
-                                 usecols= [0, 1, 7, 8, 9, 20])
+                                 usecols=[0, 1, 7, 8, 9, 20])
         file_table.Filename = file_table.Filename.str.lower()
         self.storm_table = file_table
 
@@ -66,7 +65,6 @@ class NHCD():
             all the models that have run forecasts for this storm throughout its life
 
         """
-
         today = datetime.today()
         current_year = today.year
         data_dictionary = {}
@@ -92,19 +90,19 @@ class NHCD():
                                            'Forecast_hour', 'Lat', 'Lon']
                 # Create a pandas dataframe using specific columns for a storm
                 single_storm = pd.read_csv(url, header=None, names=storm_data_column_names,
-                                           index_col=False, usecols= [0, 1, 2, 4, 5, 6, 7])
+                                           index_col=False, usecols=[0, 1, 2, 4, 5, 6, 7])
 
                 # Must convert lats and lons from string to float and preform division by 10
                 storm_lats = single_storm['Lat']
                 storm_lats = (storm_lats.str.slice(stop=-1))
                 storm_lats = storm_lats.astype(float)
-                storm_lats = storm_lats/10
+                storm_lats = storm_lats / 10
                 single_storm['Lat'] = storm_lats
 
                 storm_lons = single_storm['Lon']
                 storm_lons = (storm_lons.str.slice(stop=-1))
                 storm_lons = storm_lons.astype(float)
-                storm_lons = -storm_lons/10
+                storm_lons = -storm_lons / 10
                 single_storm['Lon'] = storm_lons
 
                 # Change WarnDT to a string
@@ -146,11 +144,9 @@ class NHCD():
             storm
 
         """
-
         # We will always plot best track, and thus must save the coordinates for plotting
         best_track = self.storm_dictionary.get('best_track')
         self.date_times = best_track['WarnDT']
-
 
         lats = best_track['Lat']
         lons = best_track['Lon']

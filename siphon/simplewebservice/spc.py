@@ -10,7 +10,7 @@ hail, wind, and tornados.
 """
 
 import pandas as pd
-from pandas import DataFrame
+
 
 class SpcData:
     """
@@ -35,7 +35,6 @@ class SpcData:
         consuming.
 
         """
-
         self.storm_type = stormtype
         self.date_time = datetime
         self.year_string = self.date_time[0:4]
@@ -72,19 +71,15 @@ class SpcData:
             or a 60+ year period based on what year is chosen.
 
         """
-
         # Place holder string 'mag' will be replaced by event type (tornado, hail or wind)
         mag = str
-
         # Colums are different for events before and after 12/31/2017.
         after_2017_columns = ['Time', mag, 'Location', 'County', 'State',
                               'Lat', 'Lon', 'Comment']
-        before_2018_columns = ['Num', 'Year', 'Month', 'Day', 'Time', 'Time Zone', 'State',
-                                mag, 'Injuries', 'Fatalities', 'Property Loss', 'Crop Loss',
-                                'Start Lat', 'Start Lon', 'End Lat', 'End Lon',
-                                'Length (mi)', 'Width (yd)', 'Ns', 'SN', 'SG',
-                                'County Code 1', 'County Code 2', 'County Code 3',
-                                'County Code 4']
+        before_2018_columns = ['Num', 'Year', 'Month', 'Day', 'Time', 'Time Zone',
+        'State', mag, 'Injuries', 'Fatalities', 'Property Loss', 'Crop Loss', 'Start Lat',
+        'Start Lon', 'End Lat', 'End Lon', 'Length (mi)', 'Width (yd)', 'Ns', 'SN', 'SG',
+        'County Code 1', 'County Code 2', 'County Code 3', 'County Code 4']
 
         # Find specific urls and create dataframe based on time and event type
         if self.storm_type == 'tornado':
@@ -92,17 +87,14 @@ class SpcData:
                 before_2018_columns[7] = 'F-Scale'
                 url = 'https://www.spc.noaa.gov/wcm/data/1950-2017_torn.csv'
                 torn_reports = pd.read_csv(url, names=before_2018_columns, header=0,
-                                           index_col=False, usecols=[0, 1, 2, 3, 5, 6, 7, 10,
-                                                                     11, 12, 13, 14, 15, 16,
-                                                                     17, 18, 19, 20, 21, 22,
-                                                                     23, 24, 25, 26, 27])
+                index_col=False, usecols=[0, 1, 2, 3, 5, 6, 7, 10, 11, 12, 13, 14, 15, 16,
+                17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
             else:
                 _url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_torn.csv'
                 url = _url.format(self.year_string[2: 4], self.month_string, self.day_string)
                 after_2017_columns[1] = 'F-Scale'
                 torn_reports = pd.read_csv(url, names=after_2017_columns,
-                                            header=0, index_col=False,
-                                            usecols=[0, 1, 2, 3, 4, 5, 6, 7])
+                header=0, index_col=False, usecols=[0, 1, 2, 3, 4, 5, 6, 7])
             return(torn_reports)
 
         elif self.storm_type == 'hail':
@@ -110,17 +102,15 @@ class SpcData:
                 before_2018_columns[7] = 'Size (hundredth in)'
                 url = 'https://www.spc.noaa.gov/wcm/data/1955-2017_hail.csv'
                 hail_reports = pd.read_csv(url, names=before_2018_columns, header=0,
-                                          index_col=False, usecols=[0, 1, 2, 3, 5, 6, 7, 10,
-                                                                    11, 12, 13, 14, 15, 16,
-                                                                    17, 18, 19, 20, 21, 22,
-                                                                    23, 24, 25, 26, 27])
+                index_col=False, usecols=[0, 1, 2, 3, 5, 6, 7, 10, 11, 12, 13, 14, 15, 16,
+                17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
+
             else:
                 _url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_hail.csv'
                 url = _url.format(self.year_string[2:4], self.month_string, self.day_string)
                 after_2017_columns[1] = 'Size (in)'
                 hail_reports = pd.read_csv(url, names=after_2017_columns,
-                                            header=0, index_col=False,
-                                            usecols=[0, 1, 2, 3, 4, 5, 6, 7])
+                header=0, index_col=False, usecols=[0, 1, 2, 3, 4, 5, 6, 7])
             return(hail_reports)
 
         elif self.storm_type == 'wind':
@@ -128,17 +118,14 @@ class SpcData:
                 before_2018_columns[7] = 'Speed (kt)'
                 url = 'https://www.spc.noaa.gov/wcm/data/1955-2017_wind.csv'
                 wind_reports = pd.read_csv(url, names=before_2018_columns, header=0,
-                                           index_col=False, usecols=[0, 1, 2, 3, 5, 6, 7, 10,
-                                                                     11, 12, 13, 14, 15, 16,
-                                                                     17, 18, 19, 20, 21, 22,
-                                                                     23, 24, 25, 26, 27])
+                index_col=False, usecols=[0, 1, 2, 3, 5, 6, 7, 10, 11, 12, 13, 14, 15, 16,
+                17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
             else:
                 _url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_wind.csv'
                 url = _url.format(self.year_string[2:4], self.month_string, self.day_string)
                 after_2017_columns[1] = 'Speed (kt)'
-                wind_reports = pd.read_csv(url, names=after_2017_columns,
-                                            header=0, index_col=False,
-                                            usecols=[0, 1, 2, 3, 4, 5, 6, 7])
+                wind_reports = pd.read_csv(url, names=after_2017_columns, header=0,
+                index_col=False, usecols=[0, 1, 2, 3, 4, 5, 6, 7])
             return(wind_reports)
 
         else:
