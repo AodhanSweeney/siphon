@@ -9,69 +9,48 @@ hail, wind, and tornados.
 
 """
 
-from io import StringIO
-
+import pandas as pd
 from pandas import DataFrame
-import requests
-
-
-def readurlfile(url):
-    """
-    Read a .dat file from a given url.
-
-    Parameters
-    ----------
-    url: string
-        location of the SPC reports for a specific given day
-
-    Returns
-    -------
-    data: list
-        parced data of SPC report in list format
-
-    """
-    headers = {'User-agent': 'Unidata Python Client Test'}
-    response = requests.get(url, headers=headers)
-    string_buffer = StringIO(response.text)
-    data = string_buffer.getvalue()
-    return data.splitlines()
-
 
 class SpcData:
     """
     Pulls data from the SPC center.
 
-    This class gets data on tornados, hail, and severe wind events. This class will return a
-    pandas dataframe for each of these storm events.
+    This class gets data on tornados, hail, and severe wind events.
+    This class will return a pandas dataframe for each of these storm events.
 
     """
 
     def __init__(self, stormtype, datetime):
         """
-        Create class of SpcData, initialized with stormtype and datetime for parsing.
+        Create class of SpcData with attributes that select date, and storm type.
 
-        Parameters
-        ----------
-        stormtype: string
-            either 'tornado', 'hail', or 'wind'
-        datetime: string
-            four digets for year (1955-2019), two for month, and two for day. Eg. 20170504
-            meaning May 4th, 2017.
+        SPC data sifting method is differentiated based on whether the storm is before 2018
+        or not. Storms after 12/31/2017 will be found by using the specific URL for the date
+        selected and finding the csv file on the SPC website. Storms prior to this date are
+        first collected into a large pd dataframe with all SPC events of a selected type
+        from 1955-2017. This data is then successively parced and trim until storms from one
+        date are achieved. This is because the SPC has changed the way they display data so
+        many times that to write specific methods for each time frame would be too time
+        consuming.
 
         """
+
         self.storm_type = stormtype
         self.date_time = datetime
         self.year_string = self.date_time[0:4]
         self.month_string = self.date_time[4:6]
         self.day_string = self.date_time[6:8]
         self.storms = self.storm_type_selection()
+
         if int(self.year_string) < 2017:
-            one_year_table = self.storms[self.storms['Year'] == self.year_string]
-            one_month_table = one_year_table[one_year_table['Month'] == self.month_string]
-            self.one_day_table = one_month_table[one_month_table['Day'] == self.day_string]
+            one_year_table = self.storms[self.storms['Year'] == int(self.year_string)]
+
+            month_table = one_year_table[one_year_table['Month'] == int(self.month_string)]
+            self.day_table = month_table[month_table['Day'] == int(self.day_string)]
 
         elif int(self.year_string) >= 2017:
-            self.one_day_table = self.storms
+            self.day_table = self.storms
 
     def storm_type_selection(self):
         """
@@ -89,120 +68,78 @@ class SpcData:
         Returns
         -------
         (torn/wind/hail)_reports: pandas DataFrame
-            This dataframe has the data about the specific storm choice for either one day
+            This dataframe has the data about the specific SPC data type for either one day
             or a 60+ year period based on what year is chosen.
 
         """
+
+        # Place holder string 'mag' will be replaced by event type (tornado, hail or wind)
+        mag = str
+
+        # Colums are different for events before and after 12/31/2017.
+        after_2017_columns = ['Time', mag, 'Location', 'County', 'State',
+                              'Lat', 'Lon', 'Comment']
+        before_2018_columns = ['Num', 'Year', 'Month', 'Day', 'Time', 'Time Zone', 'State',
+                                mag, 'Injuries', 'Fatalities', 'Property Loss', 'Crop Loss',
+                                'Start Lat', 'Start Lon', 'End Lat', 'End Lon',
+                                'Length (mi)', 'Width (yd)', 'Ns', 'SN', 'SG',
+                                'County Code 1', 'County Code 2', 'County Code 3',
+                                'County Code 4']
+
+        # Find specific urls and create dataframe based on time and event type
         if self.storm_type == 'tornado':
             if int(self.year_string) <= 2017:
+                before_2018_columns[7] = 'F-Scale'
                 url = 'https://www.spc.noaa.gov/wcm/data/1950-2017_torn.csv'
+                torn_reports = pd.read_csv(url, names=before_2018_columns, header=0,
+                                           index_col=False, usecols=[0, 1, 2, 3, 5, 6, 7, 10,
+                                                                     11, 12, 13, 14, 15, 16,
+                                                                     17, 18, 19, 20, 21, 22,
+                                                                     23, 24, 25, 26, 27])
             else:
-                zurl = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_torn.csv'
-                url = zurl.format(self.year_string[2: 4], self.month_string, self.day_string)
-            torn_filelines = readurlfile(url)
-            torn_reports = self.split_storm_info(torn_filelines, 'F-Scale')
+                _url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_torn.csv'
+                url = _url.format(self.year_string[2: 4], self.month_string, self.day_string)
+                after_2017_columns[1] = 'F-Scale'
+                torn_reports = pd.read_csv(url, names=after_2017_columns,
+                                            header=0, index_col=False,
+                                            usecols=[0, 1, 2, 3, 4, 5, 6, 7])
             return(torn_reports)
 
         elif self.storm_type == 'hail':
             if int(self.year_string) <= 2017:
+                before_2018_columns[7] = 'Size (hundredth in)'
                 url = 'https://www.spc.noaa.gov/wcm/data/1955-2017_hail.csv'
+                hail_reports = pd.read_csv(url, names=before_2018_columns, header=0,
+                                          index_col=False, usecols=[0, 1, 2, 3, 5, 6, 7, 10,
+                                                                    11, 12, 13, 14, 15, 16,
+                                                                    17, 18, 19, 20, 21, 22,
+                                                                    23, 24, 25, 26, 27])
             else:
-                zurl = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_hail.csv'
-                url = zurl.format(self.year_string[2:4], self.month_string, self.day_string)
-            hail_filelines = readurlfile(url)
-            hail_reports = self.split_storm_info(hail_filelines, 'Size (in)')
+                _url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_hail.csv'
+                url = _url.format(self.year_string[2:4], self.month_string, self.day_string)
+                after_2017_columns[1] = 'Size (in)'
+                hail_reports = pd.read_csv(url, names=after_2017_columns,
+                                            header=0, index_col=False,
+                                            usecols=[0, 1, 2, 3, 4, 5, 6, 7])
             return(hail_reports)
 
         elif self.storm_type == 'wind':
             if int(self.year_string) <= 2017:
+                before_2018_columns[7] = 'Speed (kt)'
                 url = 'https://www.spc.noaa.gov/wcm/data/1955-2017_wind.csv'
+                wind_reports = pd.read_csv(url, names=before_2018_columns, header=0,
+                                           index_col=False, usecols=[0, 1, 2, 3, 5, 6, 7, 10,
+                                                                     11, 12, 13, 14, 15, 16,
+                                                                     17, 18, 19, 20, 21, 22,
+                                                                     23, 24, 25, 26, 27])
             else:
-                zurl = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_wind.csv'
-                url = zurl.format(self.year_string[2:4], self.month_string, self.day_string)
-            wind_filelines = readurlfile(url)
-            wind_reports = self.split_storm_info(wind_filelines, 'Speed (kt)')
+                _url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_wind.csv'
+                url = _url.format(self.year_string[2:4], self.month_string, self.day_string)
+                after_2017_columns[1] = 'Speed (kt)'
+                wind_reports = pd.read_csv(url, names=after_2017_columns,
+                                            header=0, index_col=False,
+                                            usecols=[0, 1, 2, 3, 4, 5, 6, 7])
             return(wind_reports)
 
-    def split_storm_info(self, storm_list, mag_string):
-        """
-        Split storm information kept in a csv file provided by the SPC.
-
-        Parameters
-        ----------
-        storm_list: list
-            All storm events for either tornado (1950-2017),
-            hail (1955-2017) or wind (1955-2017)
-        mag_string: string
-            Word that tells us what type of data is being stored in the
-            'mag' section of the csv file. For tornados it is F-scale
-            data, for wind it is speed, and for hail it is hail size.
-
-        Returns
-        -------
-        storms: pandas DataFrame
-            Data for the 60+ year time frame consolidated into one
-            single dataframe
-
-        """
-        if int(self.year_string) <= 2017:
-            om, year, mo, day, time, tz, st, sn = [], [], [], [], [], [], [], []
-            stn, mag, inj, fat, loss, closs, slat = [], [], [], [], [], [], []
-            slon, elat, elon, length, wid, ns, sg = [], [], [], [], [], [], []
-            f1, f2, f3, f4 = [], [], [], []
-            for line in storm_list[1:]:
-                fields = line.split(',')
-                om.append(fields[0].strip())
-                year.append(fields[1].strip())
-                mo.append(fields[2].strip())
-                day.append(fields[3].strip())
-                time.append(fields[5].strip())
-                tz.append(fields[6].strip())
-                st.append(fields[7].strip())
-                stn.append(fields[9].strip())
-                mag.append(fields[10].strip())
-                inj.append(fields[11].strip())
-                fat.append(fields[12].strip())
-                loss.append(fields[13].strip())
-                closs.append(fields[14].strip())
-                slat.append(fields[15].strip())
-                slon.append(fields[16].strip())
-                elat.append(fields[17].strip())
-                elon.append(fields[18].strip())
-                length.append(fields[19].strip())
-                wid.append(fields[20].strip())
-                ns.append(fields[21].strip())
-                sn.append(fields[22].strip())
-                sg.append(fields[23].strip())
-                f1.append(fields[24].strip())
-                f2.append(fields[25].strip())
-                f3.append(fields[26].strip())
-                f4.append(fields[27].strip())
-
-            storms = DataFrame({'Num': om, 'Year': year, 'Month': mo, 'Day': day,
-                                'Time': time, 'Time Zone': tz, 'State': st, mag_string: mag,
-                                'Injuries': inj, 'Fatalities': fat, 'Property Loss': loss,
-                                'Crop loss': closs, 'Start lat': slat, 'Start lon': slon,
-                                'End lat': elat, 'End lon': elon, 'Length (mi)': length,
-                                'Width (yrd)': wid, 'NS': ns, 'SN': sn, 'SG': sg,
-                                'County Code 1': f1, 'County Code 2': f2, 'County Code 3': f3,
-                                'County Code 4': f4})
-            return(storms)
-
         else:
-            time, mag, location, county = [], [], [], []
-            state, lat, lon, comment = [], [], [], []
-            for line in storm_list[1:]:
-                fields = line.split(',')
-                time.append(fields[0])
-                mag.append(fields[1])
-                location.append(fields[2])
-                county.append(fields[3])
-                state.append(fields[4])
-                lat.append(fields[5])
-                lon.append(fields[6])
-                comment.append(fields[7])
-
-            storms = DataFrame({'Time': time, mag_string: mag, 'Location': location,
-                                'County': county, 'State': state, 'Lat': lat,
-                                'Lon': lon, 'Comment': comment})
-            return(storms)
+            raise('Not a valid event type: enter either tornado, wind or hail.')

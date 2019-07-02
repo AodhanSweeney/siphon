@@ -6,93 +6,13 @@ This program is written to pull data from the National Hurricane
 Center and return the data in an easy to use format.
 
 """
-import gzip
-from io import BytesIO
-from io import StringIO
+
+from datetime import datetime
 
 import numpy as np
+import pandas as pd
 from pandas import DataFrame
 import requests
-
-
-def read_urlfile(url):
-    """
-    Read a .dat file from a given url.
-
-    Parameters
-    ----------
-    url: string
-        location of the NHC database
-
-    Returns
-    -------
-    data: list
-        parced data of NHC in list format
-
-    """
-    headers = {'User-agent': 'Unidata Python Client Test'}
-    response = requests.get(url, headers=headers)
-    # Store data response in a string buffer
-    string_buffer = StringIO(response.text)
-    # Read from the string buffer as if it were a physical file
-    data = string_buffer.getvalue()
-    return data.splitlines()
-
-
-def read_gzfile(url):
-    """
-    Open and reads zipped files.
-
-    Parameters
-    ----------
-    url: string
-        location of the NHC database
-
-    Returns
-    -------
-    data: list
-        parced data of NHC in list format
-
-    """
-    headers = {'User-agent': 'Unidata Python Client Test'}
-    response = requests.get(url, headers=headers)
-    # Store data response in a bytes buffer
-    bio_buffer = BytesIO(response.content)
-    # Read from the string buffer as if it were a physical file
-    gzf = gzip.GzipFile(fileobj=bio_buffer)
-    data = gzf.read()
-    return data.splitlines()
-
-
-def split_storm_info(storm_list):
-    """
-    Take a list of strings and creates a pandas dataframe for NHC data.
-
-    Parameters
-    ----------
-    storm_list: list
-        parced list of NHC data in list format
-
-    Returns
-    -------
-    storms: pandas.DataFrame
-        dataframe of NHC info
-
-    """
-    name, cyclonenum, year, stormtype, basin, filename = [], [], [], [], [], []
-    for line in storm_list[1:]:
-        fields = line.split(',')
-        name.append(fields[0].strip())
-        basin.append(fields[1].strip())
-        cyclonenum.append(fields[7].strip())
-        year.append(fields[8].strip())
-        stormtype.append(fields[9].strip())
-        filename.append(fields[-1].strip().lower())
-
-    storms = DataFrame({'Name': name, 'Basin': basin, 'CycloneNum': np.array(cyclonenum),
-                        'Year': np.array(year), 'StormType': stormtype,
-                        'Filename': filename})
-    return(storms)
 
 
 class NHCD():
@@ -107,12 +27,18 @@ class NHCD():
         """
         Create with member attributes and storm info.
 
-        This initiation creates a file lines list from a given url with all storms,
-        and also a storm_table member attribute.
+        This initiation creates a file table based on a url for all storms in the
+        NHCD and puts them into a pandas dataframe. This dataframe is then turned
+        into a member atribute '.storm_table'.
 
         """
-        file_lines = read_urlfile('http://ftp.nhc.noaa.gov/atcf/index/storm_list.txt')
-        self.storm_table = split_storm_info(file_lines)
+
+        storm_list_columns = ['Name', 'Basin', 'CycloneNum', 'Year', 'StormType', 'Filename']
+        file_table = pd.read_csv('http://ftp.nhc.noaa.gov/atcf/index/storm_list.txt',
+                                 names=storm_list_columns, header=None, index_col=False,
+                                 usecols= [0, 1, 7, 8, 9, 20])
+        file_table.Filename = file_table.Filename.str.lower()
+        self.storm_table = file_table
 
     def get_tracks(self, year, filename):
         """
@@ -131,7 +57,8 @@ class NHCD():
             year of the storm incident
         filename: str
             unique filename of the storm which is used for indexing purposes and id
-            in the NHCD
+            in the NHCD. The first character is defaulted as space in NHCD so it is clipped
+            when being used.
 
         Returns
         -------
@@ -139,62 +66,61 @@ class NHCD():
             all the models that have run forecasts for this storm throughout its life
 
         """
-        year = str(year)
+
+        today = datetime.today()
+        current_year = today.year
         data_dictionary = {}
         # Current year data is stored in a different location
-        if year == '2019':
-            urlf = 'http://ftp.nhc.noaa.gov/atcf/aid_public/a{}.dat.gz'.format(filename)
-            urlb = 'http://ftp.nhc.noaa.gov/atcf/btk/b{}.dat'.format(filename)
+        if year == str(current_year):
+            unformatted_forecast_url = 'http://ftp.nhc.noaa.gov/atcf/aid_public/a{}.dat.gz'
+            urlf = unformatted_forecast_url.format(filename[1:])
+            unformatted_best_url = 'http://ftp.nhc.noaa.gov/atcf/btk/b{}.dat'
+            urlb = unformatted_best_url.format(filename[1:])
         else:
-            urlf = 'http://ftp.nhc.noaa.gov/atcf/archive/{}/a{}.dat.gz'.format(year, filename)
-            urlb = 'http://ftp.nhc.noaa.gov/atcf/archive/{}/b{}.dat.gz'.format(year, filename)
+            unformatted_forecast_url = 'http://ftp.nhc.noaa.gov/atcf/archive/{}/a{}.dat.gz'
+            urlf = unformatted_forecast_url.format(year, filename[1:])
+            unformatted_best_url = 'http://ftp.nhc.noaa.gov/atcf/archive/{}/b{}.dat.gz'
+            urlb = unformatted_best_url.format(year, filename[1:])
 
         url_links = [urlf, urlb]
         url_count = 0
         for url in url_links:
             # Checking if url is valid, if status_code is 200 then website is active
             if requests.get(url).status_code == 200:
-                if url.endswith('.dat'):
-                    lines = read_urlfile(url)
+                # Creating column names
+                storm_data_column_names = ['Basin', 'CycloneNum', 'WarnDT', 'Model',
+                                           'Forecast_hour', 'Lat', 'Lon']
+                # Create a pandas dataframe using specific columns for a storm
+                single_storm = pd.read_csv(url, header=None, names=storm_data_column_names,
+                                           index_col=False, usecols= [0, 1, 2, 4, 5, 6, 7])
+
+                # Must convert lats and lons from string to float and preform division by 10
+                storm_lats = single_storm['Lat']
+                storm_lats = (storm_lats.str.slice(stop=-1))
+                storm_lats = storm_lats.astype(float)
+                storm_lats = storm_lats/10
+                single_storm['Lat'] = storm_lats
+
+                storm_lons = single_storm['Lon']
+                storm_lons = (storm_lons.str.slice(stop=-1))
+                storm_lons = storm_lons.astype(float)
+                storm_lons = -storm_lons/10
+                single_storm['Lon'] = storm_lons
+
+                # Change WarnDT to a string
+                single_storm['WarnDT'] = [str(x) for x in single_storm['WarnDT']]
+
+                # Adding this newly created DataFrame to a dictionary
+                if url_count == 0:
+                    data_dictionary['forecast'] = single_storm
                 else:
-                    lines = read_gzfile(url)
-
-                # Splitting the method for which we will create the dataframe
-                lat, lon, basin, cyclonenum = [], [], [], []
-                warn_dt, model, forecast_hour = [], [], []
-                for line in lines:
-                    line = str(line)
-                    line = line[2:]
-                    fields = line.split(',')
-                    latsingle = int(fields[6][:-1]) / 10.0
-                    lonsingle = -(int(fields[7][:-1]) / 10.0)
-                    lat.append(latsingle)
-                    lon.append(lonsingle)
-                    basin.append(fields[0])
-                    forecast_hour.append(fields[5])
-                    cyclonenum.append(fields[1].strip())
-                    warn_dt.append(fields[2].strip())
-                    model.append(fields[4].strip())
-
-                    # Combining data from file into a Pandas Dataframe.
-                    storm_data_frame = DataFrame({'Basin': basin,
-                                                  'CycloneNum': np.array(cyclonenum),
-                                                  'WarnDT': np.array(warn_dt),
-                                                  'Model': model, 'Lat': np.array(lat),
-                                                  'Lon': np.array(lon),
-                                                  'forecast_hour':
-                                                  np.array(forecast_hour)})
-                    # Adding this newly created DataFrame to a dictionary
-                    if url_count == 0:
-                        data_dictionary['forecast'] = storm_data_frame
-                    else:
-                        data_dictionary['best_track'] = storm_data_frame
+                    data_dictionary['best_track'] = single_storm
 
             else:
                 raise('url {} was not valid, select different storm.'.format(url))
 
             url_count += 1
-
+        # Turn data_dictionary into a member attribute
         self.storm_dictionary = data_dictionary
         forecast = data_dictionary.get('forecast')
         unique_models, unique_index = list(np.unique(forecast['Model'].values,
@@ -220,8 +146,12 @@ class NHCD():
             storm
 
         """
+
+        # We will always plot best track, and thus must save the coordinates for plotting
         best_track = self.storm_dictionary.get('best_track')
         self.date_times = best_track['WarnDT']
+
+
         lats = best_track['Lat']
         lons = best_track['Lon']
         self.best_track_coordinates = [lats, lons]
