@@ -1,7 +1,6 @@
 """Reading National Hurricane Center Data.
 
 ======================================
-By: Aodhan Sweeney
 This program is written to pull data from the National Hurricane
 Center and return the data in an easy to use format.
 
