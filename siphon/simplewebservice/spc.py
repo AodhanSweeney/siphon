@@ -89,9 +89,10 @@ class SpcData:
                 before_2018_columns[7] = 'F-Scale'
                 url = 'https://www.spc.noaa.gov/wcm/data/1950-2017_torn.csv'
                 torn_reports = pd.read_csv(url, names=before_2018_columns, header=0,
-                                           index_col=False, usecols=[0, 1, 2, 3, 5,
-                                           6, 7, 10, 11, 12, 13, 14, 15, 16,
-                                           17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27])
+                                           index_col=False, usecols=[0, 1, 2, 3, 5, 6, 7,
+                                                                     10, 11, 12, 13, 14, 15,
+                                                                     16, 17, 18, 19, 20, 21,
+                                                                     22, 23, 24, 25, 26, 27])
             else:
                 _url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_torn.csv'
                 url = _url.format(self.year_string[2: 4], self.month_string, self.day_string)
@@ -106,9 +107,10 @@ class SpcData:
                 before_2018_columns[7] = 'Size (hundredth in)'
                 url = 'https://www.spc.noaa.gov/wcm/data/1955-2017_hail.csv'
                 hail_reports = pd.read_csv(url, names=before_2018_columns, header=0,
-                                           index_col=False, usecols=[0, 1, 2, 3, 5, 6,
-                                           7, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-                                           20, 21, 22, 23, 24, 25, 26, 27])
+                                           index_col=False, usecols=[0, 1, 2, 3, 5, 6, 7,
+                                                                     10, 11, 12, 13, 14, 15,
+                                                                     16, 17, 18, 19, 20, 21,
+                                                                     22, 23, 24, 25, 26, 27])
 
             else:
                 _url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_hail.csv'
@@ -124,9 +126,10 @@ class SpcData:
                 before_2018_columns[7] = 'Speed (kt)'
                 url = 'https://www.spc.noaa.gov/wcm/data/1955-2017_wind.csv'
                 wind_reports = pd.read_csv(url, names=before_2018_columns, header=0,
-                                           index_col=False, usecols=[0, 1, 2, 3, 5, 6,
-                                           7, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-                                           20, 21, 22, 23, 24, 25, 26, 27])
+                                           index_col=False, usecols=[0, 1, 2, 3, 5, 6, 7,
+                                                                     10, 11, 12, 13, 14, 15,
+                                                                     16, 17, 18, 19, 20, 21,
+                                                                     22, 23, 24, 25, 26, 27])
             else:
                 _url = 'https://www.spc.noaa.gov/climo/reports/{}{}{}_rpts_filtered_wind.csv'
                 url = _url.format(self.year_string[2:4], self.month_string, self.day_string)
