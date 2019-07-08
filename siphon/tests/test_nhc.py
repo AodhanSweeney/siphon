@@ -50,7 +50,8 @@ def test_nhc_archives():
 @recorder.use_cassette('nhc_no_data')
 def test_no_data_nhc():
     """Test nhc data when passed an invalid url."""
-    with pytest.raises(ValueError):
+    nhc = NHCD()
+    with pytest.raises(ValueError):        
         nhc.get_tracks(1965, 'ab123456')
 
 test_nhc()
