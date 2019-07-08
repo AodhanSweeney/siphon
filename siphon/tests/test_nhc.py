@@ -51,8 +51,9 @@ def test_nhc_archives():
 def test_no_data_nhc():
     """Test nhc data when passed an invalid url."""
     nhc = NHCD()
-    with pytest.raises(ValueError):        
-        nhc.get_tracks(1965, 'ab123456')
+    with pytest.raises(ValueError):
+        nhc.get_tracks(1965, ' ab123456')
+
 
 test_nhc()
 test_nhc_archives()
