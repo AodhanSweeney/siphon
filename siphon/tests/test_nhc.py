@@ -1,7 +1,5 @@
 """Test National Hurricane Center database access."""
 
-from datetime import datetime
-from numpy.testing import assert_almost_equal
 import pytest
 
 from siphon.simplewebservice.nhc import NHCD
@@ -47,6 +45,13 @@ def test_nhc_archives():
     assert(nhc.storm_dictionary['best_track']['Forecast_hour'].iloc[0] == 0)
     assert(nhc.storm_dictionary['best_track']['Lat'].iloc[0] == 28)
     assert(nhc.storm_dictionary['best_track']['Lon'].iloc[0] == -52.3)
+
+
+@recorder.use_cassette('nhc_no_data')
+def test_no_data_nhc():
+    """Test nhc data when passed an invalid url."""
+    with pytest.raises(ValueError):
+        nhc.get_tracks(1965, 'ab123456')
 
 test_nhc()
 test_nhc_archives()

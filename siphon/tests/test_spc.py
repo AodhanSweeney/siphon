@@ -41,6 +41,7 @@ def test_spc():
     assert(spc_before_2018.day_table['County Code 3'].iloc[0] == 0)
     assert(spc_before_2018.day_table['County Code 4'].iloc[0] == 0)
 
+
 @recorder.use_cassette('spc_after_2018_archive')
 def test_spc_new_parcing_method():
     """Test of method of SPC data parscing to be used for recent years."""
@@ -53,6 +54,13 @@ def test_spc_new_parcing_method():
     assert(spc_after_2018.day_table['Lat'].iloc[0] == 44.78)
     assert(spc_after_2018.day_table['Lon'].iloc[0] == -89.69)
     assert(spc_after_2018.day_table['Comment'].iloc[0] == '(GRB)')
+
+
+@recorder.use_cassette('spc_no_data')
+def test_no_data_spc():
+    """Test spc data when passed an invalid storm type ."""
+    with pytest.raises(ValueError):
+        SpcData('hotdog', '19650403')
 
 
 test_spc()
