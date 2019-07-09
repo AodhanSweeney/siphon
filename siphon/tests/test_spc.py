@@ -14,6 +14,13 @@ def test_spc():
     """Test that we are properly parsing data from the Storm Prediction Center."""
     # Testing wind events for random day in may 20th, 2013
     spc_before_2018 = SpcData('wind', '20130520')
+
+    assert(spc_before_2018.storm_type == 'wind')
+    assert(spc_before_2018.date_time == '20130520')
+    assert(spc_before_2018.year_string == '2013')
+    assert(spc_before_2018.month_string == '05')
+    assert(spc_before_2018.day_string == '20')
+
     assert(spc_before_2018.day_table['Num'].iloc[0] == 441595)
     assert(spc_before_2018.day_table['Year'].iloc[0] == 2013)
     assert(spc_before_2018.day_table['Month'].iloc[0] == 5)

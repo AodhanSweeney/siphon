@@ -41,13 +41,12 @@ class SpcData:
         self.day_string = self.date_time[6:8]
         self.storms = self.storm_type_selection()
 
-        if int(self.year_string) < 2017:
+        if int(self.year_string) <= 2017:
             one_year_table = self.storms[self.storms['Year'] == int(self.year_string)]
-
             month_table = one_year_table[one_year_table['Month'] == int(self.month_string)]
             self.day_table = month_table[month_table['Day'] == int(self.day_string)]
 
-        elif int(self.year_string) >= 2017:
+        elif int(self.year_string) > 2017:
             self.day_table = self.storms
 
     def storm_type_selection(self):
