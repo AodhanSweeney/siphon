@@ -138,3 +138,6 @@ class SpcData:
 
         else:
             raise('Not a valid event type: enter either tornado, wind or hail.')
+
+spc_hail_before_2018 = SpcData('wind', '20180615')
+print(spc_hail_before_2018.day_table.iloc[0])
